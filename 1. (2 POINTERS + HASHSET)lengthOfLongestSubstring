@@ -1,0 +1,56 @@
+/*Given a string s, find the length of the longest 
+substring without repeating characters.
+Example 1:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+
+Example 2:
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Example 3:
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.*/
+
+/*why hashset? -  HASHSET takes O(1) to remove element as it internally uses hashing technique to locate the element
+                  ARRAYLIST takes O(n) to locate the element and also involves internal shifting to fill the gap*/
+//left is the start of current substring
+//right is for expanding substring, marks the end of substring is duplicate is found
+import java.util.*;
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> hs = new HashSet<>();
+        int left= 0, right = 0, maxLen = 0;
+        while(right<s.length()){
+            if(!hs.contains(s.charAt(right))){
+                hs.add(s.charAt(right));
+                maxLen = Math.max(maxLen, right-left+1);
+                right++;
+            }else{
+                hs.remove(s.charAt(left));
+                left++;
+            }
+        }
+        return maxLen;
+    }
+}
+
+/*EXAMPLE WALKTHROUGH
+pwwkew 
+hs = {}, left= 0, maxlen = 0, right = 0
+while 0: hs={p} left=0 maxlen=1 right=1
+while 1: hs={p,w} left=0 maxlen=2 right=2
+while 2: hs={w} left=1 maxlen=2 right=2
+while 3: hs={} left=2 maxlen=2 right=2
+while 4: hs={w} left=2 maxlen=2 right=3
+
+while 5: hs={w,k} left=2 maxlen=2 right=4
+while 6: hs={w,k,e} left=2 maxlen=3 right=5
+while 7: hs={k,e} left=2 maxlen=3 right=5
+while 8: hs={k,e,w} left=2 maxlen=3 right=6
+
+*/
